@@ -4,12 +4,11 @@ import { PropsWithChildren } from 'react';
 import type { Metadata, NextPage } from 'next';
 import { Inter } from 'next/font/google';
 
+import { ThemeProvider } from '@/components/theme/provider';
+import { ModeToggle } from '@/components/theme/toggle';
 import { cn } from '@/lib/utils';
 
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-sans',
-});
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -18,13 +17,19 @@ export const metadata: Metadata = {
 
 const RootLayout: NextPage<PropsWithChildren> = ({ children }) => (
   <html lang="pt-br">
-    <body
-      className={cn(
-        'bg-background min-h-screen font-sans antialiased',
-        inter.variable
-      )}
-    >
-      {children}
+    <body className={cn('bg-background font-sans antialiased', inter.variable)}>
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="dark"
+        disableTransitionOnChange
+      >
+        <main className="flex min-h-screen flex-col gap-4">
+          <nav className="flex justify-end p-4">
+            <ModeToggle />
+          </nav>
+          {children}
+        </main>
+      </ThemeProvider>
     </body>
   </html>
 );
