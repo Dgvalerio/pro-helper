@@ -4,7 +4,12 @@ import { PropsWithChildren } from 'react';
 import type { Metadata, NextPage } from 'next';
 import { Inter } from 'next/font/google';
 
-const inter = Inter({ subsets: ['latin'] });
+import { cn } from '@/lib/utils';
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-sans',
+});
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -13,7 +18,14 @@ export const metadata: Metadata = {
 
 const RootLayout: NextPage<PropsWithChildren> = ({ children }) => (
   <html lang="pt-br">
-    <body className={inter.className}>{children}</body>
+    <body
+      className={cn(
+        'bg-background min-h-screen font-sans antialiased',
+        inter.variable
+      )}
+    >
+      {children}
+    </body>
   </html>
 );
 
