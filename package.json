@@ -22,6 +22,7 @@
     "lucide-react": "^0.287.0",
     "next": "13.5.4",
     "next-themes": "^0.2.1",
+    "octokit": "^3.1.1",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.47.0",
@@ -32,6 +33,7 @@
   },
   "devDependencies": {
     "@dgvalerio/eslint-config": "^1.5.3",
+    "@octokit/types": "^12.0.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

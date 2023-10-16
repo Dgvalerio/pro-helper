@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 
 import { Key } from 'lucide-react';
+import { Octokit } from 'octokit';
 import { z } from 'zod';
 
 const configurationSchema = z.object({
@@ -32,11 +33,15 @@ const ConfigurationPage: NextPage = () => {
     try {
       setLoading(true);
 
+      const octokit = new Octokit({ auth: data.githubToken });
+
+      await octokit.rest.users.getAuthenticated();
+
       setToken(data.githubToken);
 
       toast({ title: 'Token atualizado com sucesso!' });
     } catch (e) {
-      form.setError('githubToken', { message: JSON.stringify(e) });
+      form.setError('githubToken', { message: 'Token inválido!' });
       toast({ title: 'Erro ao atualizar o token!', variant: 'destructive' });
     } finally {
       setLoading(false);
