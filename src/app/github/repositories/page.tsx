@@ -1,12 +1,20 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, {
+  InputHTMLAttributes,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
 import { NextPage } from 'next';
 
+import { useRepositoriesStore } from '@/app/github/repositories/store';
 import { Repository as RepositoryFull } from '@/app/github/repositories/type';
-import { getOctokit } from '@/app/github/service';
+import { Input } from '@/components/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
+
+import { Search } from 'lucide-react';
 
 export interface Repository {
   fullName: RepositoryFull['full_name'];
@@ -17,41 +25,57 @@ export interface Repository {
 }
 
 const GithubRepositoriesPage: NextPage = () => {
-  const [loading, setLoading] = useState(false);
-  const [repositories, setRepositories] = useState<Repository[]>([]);
+  const {
+    repositories: fullList,
+    loadRepositories,
+    loading,
+  } = useRepositoriesStore();
 
-  const getRepositories = async (): Promise<void> => {
-    setLoading(true);
+  const [repository, setRepository] = useState<string>('');
 
-    try {
-      const response = await getOctokit().request('GET /user/repos', {
-        per_page: 16,
-        sort: 'pushed',
-      });
+  const handleSearch: InputHTMLAttributes<HTMLInputElement>['onChange'] = (
+    event
+  ): void => setRepository(event.target.value);
 
-      const data: Repository[] = response.data.map(
-        (props): Repository => ({
-          fullName: props.full_name,
-          name: props.name,
-          owner: props.owner.login,
-          avatar: props.owner.avatar_url,
-          avatarFallback: props.owner.login.slice(0, 2),
-        })
-      );
+  useEffect(() => void loadRepositories(), [loadRepositories]);
 
-      setRepositories(data);
-    } catch (e) {
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => void getRepositories(), []);
+  const repositories = useMemo(
+    () =>
+      fullList
+        .filter((repo) =>
+          repository.length > 0
+            ? repo.full_name.toLowerCase().includes(repository.toLowerCase())
+            : true
+        )
+        .slice(0, 16)
+        .map(
+          (props): Repository => ({
+            fullName: props.full_name,
+            name: props.name,
+            owner: props.owner.login,
+            avatar: props.owner.avatar_url,
+            avatarFallback: props.owner.login.slice(0, 2),
+          })
+        ),
+    [fullList, repository]
+  );
 
   return (
     <div className="flex flex-col items-center justify-center gap-8 p-8">
       <h1 className="text-2xl">Repositórios</h1>
       <div className="w-full max-w-4xl space-y-8">
+        <Input.Label className="flex w-full flex-col" htmlFor="repository">
+          <Input.Root>
+            <Input.Icon>
+              <Search />
+            </Input.Icon>
+            <Input.Text
+              name="repository"
+              value={repository}
+              onChange={handleSearch}
+            />
+          </Input.Root>
+        </Input.Label>
         {repositories.map((repository) => (
           <div className="flex items-center" key={repository.fullName}>
             <Avatar className="h-9 w-9">

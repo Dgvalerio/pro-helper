@@ -16,7 +16,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 
 const inputRootVariants = cva(
   [
-    'flex flex-1 items-center gap-1 rounded bg-white p-2 file:bg-transparent dark:bg-zinc-950 text-zinc-400 transition-colors duration-75 focus-within:text-zinc-100',
+    'flex flex-1 items-center gap-1 rounded bg-white px-2 file:bg-transparent dark:bg-zinc-950 text-zinc-400 transition-colors duration-75 focus-within:text-zinc-100',
     'focus-within:ring-2 focus-within:ring-zinc-950 focus-within:ring-offset-2 dark:ring-offset-zinc-950 dark:focus-within:ring-zinc-300',
   ],
   {
