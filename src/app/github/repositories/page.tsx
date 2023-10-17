@@ -3,46 +3,50 @@ import React, { useEffect, useState } from 'react';
 
 import { NextPage } from 'next';
 
-import { Endpoints } from '@octokit/types';
-
+import { Repository as RepositoryFull } from '@/app/github/repositories/type';
 import { getOctokit } from '@/app/github/service';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
 
-export type Repositories = Endpoints['GET /user/repos']['response']['data'];
-export type Repository = Repositories[number];
-export interface RepositoryDto {
-  fullName: Repository['full_name'];
-  name: Repository['name'];
-  owner: {
-    login: Repository['owner']['login'];
-    avatar: Repository['owner']['avatar_url'];
-  };
+export interface Repository {
+  fullName: RepositoryFull['full_name'];
+  name: RepositoryFull['name'];
+  owner: RepositoryFull['owner']['login'];
+  avatar: RepositoryFull['owner']['avatar_url'];
+  avatarFallback: string;
 }
-
-const getRepositories = async (): Promise<RepositoryDto[]> => {
-  const response = await getOctokit().request('GET /user/repos', {
-    per_page: 16,
-    sort: 'pushed',
-  });
-
-  return response.data.map((props) => ({
-    fullName: props.full_name,
-    name: props.name,
-    owner: { login: props.owner.login, avatar: props.owner.avatar_url },
-  }));
-};
 
 const GithubRepositoriesPage: NextPage = () => {
   const [loading, setLoading] = useState(false);
-  const [repositories, setRepositories] = useState<RepositoryDto[]>([]);
+  const [repositories, setRepositories] = useState<Repository[]>([]);
 
-  useEffect(() => {
+  const getRepositories = async (): Promise<void> => {
     setLoading(true);
-    getRepositories()
-      .then((data) => setRepositories(data))
-      .finally(() => setLoading(false));
-  }, []);
+
+    try {
+      const response = await getOctokit().request('GET /user/repos', {
+        per_page: 16,
+        sort: 'pushed',
+      });
+
+      const data: Repository[] = response.data.map(
+        (props): Repository => ({
+          fullName: props.full_name,
+          name: props.name,
+          owner: props.owner.login,
+          avatar: props.owner.avatar_url,
+          avatarFallback: props.owner.login.slice(0, 2),
+        })
+      );
+
+      setRepositories(data);
+    } catch (e) {
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => void getRepositories(), []);
 
   return (
     <div className="flex flex-col items-center justify-center gap-8 p-8">
@@ -51,18 +55,15 @@ const GithubRepositoriesPage: NextPage = () => {
         {repositories.map((repository) => (
           <div className="flex items-center" key={repository.fullName}>
             <Avatar className="h-9 w-9">
-              <AvatarImage
-                src={repository.owner.avatar}
-                alt={repository.owner.login}
-              />
-              <AvatarFallback>{repository.owner.login[0]}</AvatarFallback>
+              <AvatarImage src={repository.avatar} alt={repository.owner} />
+              <AvatarFallback>{repository.avatarFallback}</AvatarFallback>
             </Avatar>
             <div className="ml-4 space-y-1">
               <p className="text-sm font-medium leading-none">
                 {repository.name}
               </p>
               <p className="text-muted-foreground text-sm">
-                by {repository.owner.login}
+                by {repository.owner}
               </p>
             </div>
             <div className="ml-auto font-medium">Ver Branches</div>
