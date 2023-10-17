@@ -34,39 +34,43 @@ const ListItem = forwardRef<ElementRef<'a'>, ComponentPropsWithoutRef<'a'>>(
 ListItem.displayName = 'ListItem';
 
 export const TopBar: FC = () => (
-  <nav className="flex justify-between border-b border-zinc-900 bg-zinc-950 p-4">
-    <NavigationMenu.Root>
-      <NavigationMenu.List>
-        {pages.map(({ page, route, subItems }) => (
-          <NavigationMenu.Item key={page}>
-            {subItems ? (
-              <>
-                <NavigationMenu.Trigger>{page}</NavigationMenu.Trigger>
-                <NavigationMenu.Content>
-                  <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                    {subItems.map((sub) => (
-                      <ListItem
-                        key={sub.page}
-                        title={sub.page}
-                        href={sub.route}
-                      >
-                        {sub.description}
-                      </ListItem>
-                    ))}
-                  </ul>
-                </NavigationMenu.Content>
-              </>
-            ) : (
-              <Link href={route} legacyBehavior passHref>
-                <NavigationMenu.Link className={NavigationMenu.triggerStyle()}>
-                  {page}
-                </NavigationMenu.Link>
-              </Link>
-            )}
-          </NavigationMenu.Item>
-        ))}
-      </NavigationMenu.List>
-    </NavigationMenu.Root>
-    <ModeToggle />
-  </nav>
+  <div className="flex items-center justify-center border-b border-zinc-100 bg-white dark:border-zinc-900 dark:bg-zinc-950">
+    <nav className="flex w-full max-w-4xl justify-between p-4">
+      <NavigationMenu.Root>
+        <NavigationMenu.List>
+          {pages.map(({ page, route, subItems }) => (
+            <NavigationMenu.Item key={page}>
+              {subItems ? (
+                <>
+                  <NavigationMenu.Trigger>{page}</NavigationMenu.Trigger>
+                  <NavigationMenu.Content>
+                    <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+                      {subItems.map((sub) => (
+                        <ListItem
+                          key={sub.page}
+                          title={sub.page}
+                          href={sub.route}
+                        >
+                          {sub.description}
+                        </ListItem>
+                      ))}
+                    </ul>
+                  </NavigationMenu.Content>
+                </>
+              ) : (
+                <Link href={route} legacyBehavior passHref>
+                  <NavigationMenu.Link
+                    className={NavigationMenu.triggerStyle()}
+                  >
+                    {page}
+                  </NavigationMenu.Link>
+                </Link>
+              )}
+            </NavigationMenu.Item>
+          ))}
+        </NavigationMenu.List>
+      </NavigationMenu.Root>
+      <ModeToggle />
+    </nav>
+  </div>
 );

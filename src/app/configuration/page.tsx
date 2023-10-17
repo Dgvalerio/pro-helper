@@ -53,7 +53,7 @@ const ConfigurationPage: NextPage = () => {
   }, [form, token]);
 
   return (
-    <div className="flex flex-col items-center justify-center gap-8 p-24">
+    <div className="flex flex-col items-center justify-center gap-8 p-8">
       <h1 className="text-2xl">Configurações</h1>
       <Form.Root<Configuration>
         className="flex w-96 flex-col gap-4"
