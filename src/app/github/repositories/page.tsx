@@ -14,11 +14,13 @@ import { Input } from '@/components/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
 
-import { Search } from 'lucide-react';
+import { Search, Lock, Unlock } from 'lucide-react';
 
 export interface Repository {
   fullName: RepositoryFull['full_name'];
   name: RepositoryFull['name'];
+  private: RepositoryFull['private'];
+  language: RepositoryFull['language'];
   owner: RepositoryFull['owner']['login'];
   avatar: RepositoryFull['owner']['avatar_url'];
   avatarFallback: string;
@@ -52,6 +54,8 @@ const GithubRepositoriesPage: NextPage = () => {
           (props): Repository => ({
             fullName: props.full_name,
             name: props.name,
+            private: props.private,
+            language: props.language,
             owner: props.owner.login,
             avatar: props.owner.avatar_url,
             avatarFallback: props.owner.login.slice(0, 2),
@@ -63,7 +67,7 @@ const GithubRepositoriesPage: NextPage = () => {
   return (
     <div className="flex flex-col items-center justify-center gap-8 p-8">
       <h1 className="text-2xl">Repositórios</h1>
-      <div className="w-full max-w-4xl space-y-8">
+      <div className="w-full max-w-4xl space-y-4">
         <Input.Label className="flex w-full flex-col" htmlFor="repository">
           <Input.Root>
             <Input.Icon>
@@ -77,12 +81,15 @@ const GithubRepositoriesPage: NextPage = () => {
           </Input.Root>
         </Input.Label>
         {repositories.map((repository) => (
-          <div className="flex items-center" key={repository.fullName}>
+          <div
+            className="flex items-center rounded p-4 hover:bg-zinc-50/10"
+            key={repository.fullName}
+          >
             <Avatar className="h-9 w-9">
               <AvatarImage src={repository.avatar} alt={repository.owner} />
               <AvatarFallback>{repository.avatarFallback}</AvatarFallback>
             </Avatar>
-            <div className="ml-4 space-y-1">
+            <div className="ml-4">
               <p className="text-sm font-medium leading-none">
                 {repository.name}
               </p>
@@ -90,7 +97,17 @@ const GithubRepositoriesPage: NextPage = () => {
                 by {repository.owner}
               </p>
             </div>
-            <div className="ml-auto font-medium">Ver Branches</div>
+            <div className="ml-auto font-medium">{repository.language}</div>
+            <div
+              className="ml-4 font-medium"
+              title={repository.private ? 'Privado' : 'Público'}
+            >
+              {repository.private ? (
+                <Lock className="text-red-800" />
+              ) : (
+                <Unlock className="text-green-800" />
+              )}
+            </div>
           </div>
         ))}
         {loading &&
