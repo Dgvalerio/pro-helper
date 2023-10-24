@@ -4,13 +4,13 @@ import { toast } from '@/components/ui/use-toast';
 
 import { create } from 'zustand';
 
-interface ConfigurationStore {
+interface RepositoriesStore {
   loading: boolean;
   repositories: Repositories;
   loadRepositories(): Promise<void>;
 }
 
-export const useRepositoriesStore = create<ConfigurationStore>((set) => ({
+export const useRepositoriesStore = create<RepositoriesStore>((set) => ({
   loading: false,
   repositories: [],
   loadRepositories: async (): Promise<void> => {
