@@ -22,6 +22,11 @@ export const pages: {
         page: 'Branches',
         description: 'Listagem de todas as branches de um repositório.',
       },
+      {
+        route: '/github/commits',
+        page: 'Commits',
+        description: 'Listagem de todas os commits de uma branch.',
+      },
     ],
   },
   { route: '/configuration', page: 'Configurações' },

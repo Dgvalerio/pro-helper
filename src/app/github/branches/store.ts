@@ -7,6 +7,7 @@ import { create } from 'zustand';
 
 interface BranchesStore {
   loading: boolean;
+  repository: string;
   branches: BranchWithLatestAuthor[];
   loadBranches(fullName: string): Promise<void>;
 }
@@ -38,11 +39,12 @@ const getLatestCommit = async (
 
 export const useBranchesStore = create<BranchesStore>((set) => ({
   loading: false,
+  repository: '',
   branches: [],
   loadBranches: async (fullName: string): Promise<void> => {
     toast({ title: 'Carregando branches...' });
 
-    set({ loading: true });
+    set({ loading: true, repository: fullName });
 
     const [owner, repo] = fullName.split('/');
 

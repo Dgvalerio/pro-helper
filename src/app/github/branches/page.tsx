@@ -43,6 +43,12 @@ const Combobox: FC = () => {
     loading,
   } = useRepositoriesStore();
 
+  const onSelectItem = (currentValue: string): void => {
+    void loadBranches(currentValue);
+    setValue(currentValue === value ? '' : currentValue);
+    setOpen(false);
+  };
+
   useEffect(() => void loadRepositories(), [loadRepositories]);
 
   const items: { label: string; value: string }[] = useMemo(
@@ -88,11 +94,7 @@ const Combobox: FC = () => {
                 <Command.Item
                   key={item.value}
                   value={item.value}
-                  onSelect={(currentValue): void => {
-                    setValue(currentValue === value ? '' : currentValue);
-                    loadBranches(currentValue);
-                    setOpen(false);
-                  }}
+                  onSelect={onSelectItem}
                 >
                   <Check
                     className={cn(
@@ -154,7 +156,7 @@ const GithubBranchesPage: NextPage = () => {
       <h1 className="text-2xl">Branches</h1>
       <div className="w-full max-w-4xl space-y-4">
         <Combobox />
-        <Input.Label className="flex w-full flex-col" htmlFor="repository">
+        <Input.Label className="flex w-full flex-col" htmlFor="branch">
           <Input.Root>
             <Input.Icon>
               <Search />
