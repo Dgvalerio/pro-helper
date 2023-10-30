@@ -8,6 +8,7 @@ import { useCommitsStore } from '@/app/github/commits/store';
 import { Commit as CommitFull } from '@/app/github/commits/type';
 import { SelectBranch } from '@/app/github/components/select-branch';
 import { SelectRepository } from '@/app/github/components/select-repository';
+import { SelectUser } from '@/app/github/components/select-user';
 import { Input } from '@/components/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { sortBy } from '@/utils/sort-by';
@@ -68,6 +69,7 @@ const GithubCommitsPage: NextPage = () => {
         <div className="flex w-full gap-4">
           <SelectRepository />
           <SelectBranch />
+          <SelectUser />
         </div>
         <Input.Label className="flex w-full flex-col" htmlFor="search">
           <Input.Root>

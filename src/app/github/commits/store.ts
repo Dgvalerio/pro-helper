@@ -6,19 +6,40 @@ import { create } from 'zustand';
 
 interface CommitsStore {
   loading: boolean;
+  repository?: string;
+  branch?: string;
+  user?: string;
   commits: Commits;
-  loadCommits(fullName: string, branchSha: string): Promise<void>;
+  loadCommits({
+    fullName,
+    branchSha,
+    user,
+  }: {
+    fullName?: string;
+    branchSha?: string;
+    user?: string;
+  }): Promise<void>;
 }
 
-export const useCommitsStore = create<CommitsStore>((set) => ({
+export const useCommitsStore = create<CommitsStore>((set, get) => ({
   loading: false,
   commits: [],
-  loadCommits: async (fullName, branchSha): Promise<void> => {
+  loadCommits: async (options): Promise<void> => {
     toast({ title: 'Carregando commits...' });
+
+    if (options.fullName) set({ repository: options.fullName });
+    if (options.branchSha) set({ branch: options.branchSha });
+    if (options.user) set({ user: options.user });
+
+    const repository = options.fullName || get().repository;
+    const branch = options.branchSha || get().branch;
+    const user = options.user || get().user;
+
+    if (!repository) throw new Error('Sem repositório');
 
     set({ loading: true });
 
-    const [owner, repo] = fullName.split('/');
+    const [owner, repo] = repository.split('/');
 
     try {
       const octokit = getOctokit();
@@ -28,7 +49,7 @@ export const useCommitsStore = create<CommitsStore>((set) => ({
       const request = async (page: number): Promise<void> => {
         const response = await octokit.request(
           'GET /repos/{owner}/{repo}/commits',
-          { owner, repo, per_page: 100, page, sha: branchSha }
+          { owner, repo, per_page: 100, page, sha: branch, committer: user }
         );
 
         commits = commits.concat(response.data);
@@ -38,8 +59,6 @@ export const useCommitsStore = create<CommitsStore>((set) => ({
       };
 
       await request(1);
-
-      console.log(commits[0]);
 
       set({ commits });
     } catch (e) {

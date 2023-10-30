@@ -8,11 +8,11 @@ import React, {
 
 import { NextPage } from 'next';
 
+import { RepositorySkeleton } from '@/app/github/repositories/skeleton';
 import { useRepositoriesStore } from '@/app/github/repositories/store';
 import { Repository as RepositoryFull } from '@/app/github/repositories/type';
 import { Input } from '@/components/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Skeleton } from '@/components/ui/skeleton';
 
 import { Search, Lock, Unlock } from 'lucide-react';
 
@@ -111,16 +111,7 @@ const GithubRepositoriesPage: NextPage = () => {
           </div>
         ))}
         {loading &&
-          [...new Array(5)].map((_, i) => (
-            <div className="flex items-center" key={i}>
-              <Skeleton className="h-9 w-9" />
-              <div className="ml-4 space-y-1">
-                <Skeleton className="h-4 w-64" />
-                <Skeleton className="h-4 w-32" />
-              </div>
-              <Skeleton className="ml-auto h-4 w-32" />
-            </div>
-          ))}
+          [...new Array(5)].map((_, i) => <RepositorySkeleton key={i} />)}
       </div>
     </div>
   );

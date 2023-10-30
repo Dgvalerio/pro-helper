@@ -1,9 +1,9 @@
 'use client';
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 
-import { useBranchesStore } from '@/app/github/branches/store';
-import { useRepositoriesStore } from '@/app/github/repositories/store';
+import { useCommitsStore } from '@/app/github/commits/store';
 import { useRepositoryCollaboratorsStore } from '@/app/github/users/store';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Command } from '@/components/ui/command';
 import { Popover } from '@/components/ui/popover';
@@ -11,39 +11,44 @@ import { cn } from '@/lib/utils';
 
 import { Check, ChevronsUpDown } from 'lucide-react';
 
-export const SelectRepository: FC = () => {
+interface Option {
+  label: string;
+  value: string;
+  avatar: string;
+}
+
+export const SelectUser: FC = () => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('');
 
-  const { loadCollaborators } = useRepositoryCollaboratorsStore();
-  const { loadBranches } = useBranchesStore();
+  const { loadCommits } = useCommitsStore();
   const {
-    repositories: fullRepositoryList,
-    loadRepositories,
+    collaborators: fullList,
     loading,
-  } = useRepositoriesStore();
+    repository,
+  } = useRepositoryCollaboratorsStore();
 
   const onSelectItem = (currentValue: string): void => {
-    void loadBranches(currentValue);
-    void loadCollaborators(currentValue);
+    void loadCommits({ fullName: repository, user: currentValue });
     setValue(currentValue === value ? '' : currentValue);
     setOpen(false);
   };
 
-  useEffect(() => void loadRepositories(), [loadRepositories]);
-
-  const items: { label: string; value: string }[] = useMemo(
+  const items: Option[] = useMemo(
     () =>
-      fullRepositoryList.map((props): { value: string; label: string } => ({
-        value: props.full_name,
-        label: props.full_name.replace('/', ': '),
-      })),
-    [fullRepositoryList]
+      fullList.map(
+        (props): Option => ({
+          value: props.login,
+          label: props.login,
+          avatar: props.avatar_url,
+        })
+      ),
+    [fullList]
   );
 
-  const inputLabel = useMemo(() => 'Selecione um repositório...', []);
-  const searchLabel = useMemo(() => 'Pesquisar repositório...', []);
-  const emptyLabel = useMemo(() => 'Nenhum repositório encontrado.', []);
+  const inputLabel = useMemo(() => 'Selecione um usuário...', []);
+  const searchLabel = useMemo(() => 'Pesquisar usuário...', []);
+  const emptyLabel = useMemo(() => 'Nenhum usuário encontrado.', []);
 
   return (
     <Popover.Root open={open} onOpenChange={setOpen}>
@@ -53,6 +58,7 @@ export const SelectRepository: FC = () => {
           role="combobox"
           aria-expanded={open}
           className="w-full justify-between"
+          disabled={fullList.length === 0}
         >
           {value
             ? items.find(
@@ -83,6 +89,10 @@ export const SelectRepository: FC = () => {
                       value === item.value ? 'opacity-100' : 'opacity-0'
                     )}
                   />
+                  <Avatar className="mr-4 h-9 w-9">
+                    <AvatarImage src={item.avatar} alt={item.value} />
+                    <AvatarFallback>{item.label}</AvatarFallback>
+                  </Avatar>
                   {item.label}
                 </Command.Item>
               ))}

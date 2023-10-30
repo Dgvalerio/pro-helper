@@ -18,7 +18,7 @@ export const SelectBranch: FC = () => {
   const { branches: fullBranchList, loading, repository } = useBranchesStore();
 
   const onSelectItem = (currentValue: string): void => {
-    void loadCommits(repository, currentValue);
+    void loadCommits({ fullName: repository, branchSha: currentValue });
     setValue(currentValue === value ? '' : currentValue);
     setOpen(false);
   };
