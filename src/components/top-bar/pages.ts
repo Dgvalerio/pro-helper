@@ -25,7 +25,12 @@ export const pages: {
       {
         route: '/github/commits',
         page: 'Commits',
-        description: 'Listagem de todas os commits de uma branch.',
+        description: 'Listagem de todos os commits de uma branch.',
+      },
+      {
+        route: '/github/pull-requests',
+        page: 'Pull Requests',
+        description: 'Listagem de todas os Pull Requests de um repositório.',
       },
     ],
   },

@@ -1,7 +1,6 @@
 'use client';
 import React, { FC, useMemo, useState } from 'react';
 
-import { useCommitsStore } from '@/app/github/commits/store';
 import { useRepositoryCollaboratorsStore } from '@/app/github/users/store';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -17,19 +16,19 @@ interface Option {
   avatar: string;
 }
 
-export const SelectUser: FC = () => {
+interface SelectUserProps {
+  onChange(user: string): void;
+}
+
+export const SelectUser: FC<SelectUserProps> = ({ onChange }) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('');
 
-  const { loadCommits } = useCommitsStore();
-  const {
-    collaborators: fullList,
-    loading,
-    repository,
-  } = useRepositoryCollaboratorsStore();
+  const { collaborators: fullList, loading } =
+    useRepositoryCollaboratorsStore();
 
   const onSelectItem = (currentValue: string): void => {
-    void loadCommits({ fullName: repository, user: currentValue });
+    onChange(currentValue);
     setValue(currentValue === value ? '' : currentValue);
     setOpen(false);
   };

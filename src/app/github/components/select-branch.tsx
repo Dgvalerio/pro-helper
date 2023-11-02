@@ -2,7 +2,6 @@
 import React, { FC, useMemo, useState } from 'react';
 
 import { useBranchesStore } from '@/app/github/branches/store';
-import { useCommitsStore } from '@/app/github/commits/store';
 import { Button } from '@/components/ui/button';
 import { Command } from '@/components/ui/command';
 import { Popover } from '@/components/ui/popover';
@@ -10,15 +9,18 @@ import { cn } from '@/lib/utils';
 
 import { Check, ChevronsUpDown } from 'lucide-react';
 
-export const SelectBranch: FC = () => {
+interface SelectBranchProps {
+  onChange(branch: string): void;
+}
+
+export const SelectBranch: FC<SelectBranchProps> = ({ onChange }) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('');
 
-  const { loadCommits } = useCommitsStore();
-  const { branches: fullBranchList, loading, repository } = useBranchesStore();
+  const { branches: fullBranchList, loading } = useBranchesStore();
 
   const onSelectItem = (currentValue: string): void => {
-    void loadCommits({ fullName: repository, branchSha: currentValue });
+    onChange(currentValue);
     setValue(currentValue === value ? '' : currentValue);
     setOpen(false);
   };

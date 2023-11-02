@@ -13,3 +13,11 @@ export type BranchWithLatestAuthor = Branch & {
   };
   update: NonNullable<NonNullable<Commit['commit']>['author']>['date'];
 };
+
+export interface SimpleBranch {
+  name: BranchWithLatestAuthor['name'];
+  sha: BranchWithLatestAuthor['commit']['sha'];
+  user: BranchWithLatestAuthor['author']['login'];
+  avatar: BranchWithLatestAuthor['author']['avatar'];
+  update: BranchWithLatestAuthor['update'];
+}

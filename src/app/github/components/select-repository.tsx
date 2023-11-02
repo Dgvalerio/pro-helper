@@ -1,7 +1,6 @@
 'use client';
 import React, { FC, useEffect, useMemo, useState } from 'react';
 
-import { useBranchesStore } from '@/app/github/branches/store';
 import { useRepositoriesStore } from '@/app/github/repositories/store';
 import { useRepositoryCollaboratorsStore } from '@/app/github/users/store';
 import { Button } from '@/components/ui/button';
@@ -11,12 +10,15 @@ import { cn } from '@/lib/utils';
 
 import { Check, ChevronsUpDown } from 'lucide-react';
 
-export const SelectRepository: FC = () => {
+interface SelectRepositoryProps {
+  onChange(repository: string): void;
+}
+
+export const SelectRepository: FC<SelectRepositoryProps> = ({ onChange }) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('');
 
   const { loadCollaborators } = useRepositoryCollaboratorsStore();
-  const { loadBranches } = useBranchesStore();
   const {
     repositories: fullRepositoryList,
     loadRepositories,
@@ -24,7 +26,7 @@ export const SelectRepository: FC = () => {
   } = useRepositoriesStore();
 
   const onSelectItem = (currentValue: string): void => {
-    void loadBranches(currentValue);
+    onChange(currentValue);
     void loadCollaborators(currentValue);
     setValue(currentValue === value ? '' : currentValue);
     setOpen(false);

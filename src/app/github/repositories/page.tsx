@@ -1,30 +1,38 @@
 'use client';
-import React, {
-  InputHTMLAttributes,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { NextPage } from 'next';
 
-import { RepositorySkeleton } from '@/app/github/repositories/skeleton';
+import { SearchInput } from '@/app/github/components/search-input';
+import { RepositoryList } from '@/app/github/repositories/list-item';
 import { useRepositoriesStore } from '@/app/github/repositories/store';
-import { Repository as RepositoryFull } from '@/app/github/repositories/type';
-import { Input } from '@/components/input';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import {
+  Repository as RepositoryFull,
+  SimpleRepository,
+} from '@/app/github/repositories/type';
 
-import { Search, Lock, Unlock } from 'lucide-react';
-
-export interface Repository {
-  fullName: RepositoryFull['full_name'];
-  name: RepositoryFull['name'];
-  private: RepositoryFull['private'];
-  language: RepositoryFull['language'];
-  owner: RepositoryFull['owner']['login'];
-  avatar: RepositoryFull['owner']['avatar_url'];
-  avatarFallback: string;
-}
+const parseRepositories = (
+  repositories: RepositoryFull[],
+  search: string
+): SimpleRepository[] =>
+  repositories
+    .filter((repo) =>
+      search.length > 0
+        ? repo.full_name.toLowerCase().includes(search.toLowerCase())
+        : true
+    )
+    .slice(0, 16)
+    .map(
+      (props): SimpleRepository => ({
+        fullName: props.full_name,
+        name: props.name,
+        private: props.private,
+        language: props.language,
+        owner: props.owner.login,
+        avatar: props.owner.avatar_url,
+        avatarFallback: props.owner.login.slice(0, 2),
+      })
+    );
 
 const GithubRepositoriesPage: NextPage = () => {
   const {
@@ -33,85 +41,25 @@ const GithubRepositoriesPage: NextPage = () => {
     loading,
   } = useRepositoriesStore();
 
-  const [repository, setRepository] = useState<string>('');
-
-  const handleSearch: InputHTMLAttributes<HTMLInputElement>['onChange'] = (
-    event
-  ): void => setRepository(event.target.value);
+  const [search, setSearch] = useState<string>('');
 
   useEffect(() => void loadRepositories(), [loadRepositories]);
 
   const repositories = useMemo(
-    () =>
-      fullList
-        .filter((repo) =>
-          repository.length > 0
-            ? repo.full_name.toLowerCase().includes(repository.toLowerCase())
-            : true
-        )
-        .slice(0, 16)
-        .map(
-          (props): Repository => ({
-            fullName: props.full_name,
-            name: props.name,
-            private: props.private,
-            language: props.language,
-            owner: props.owner.login,
-            avatar: props.owner.avatar_url,
-            avatarFallback: props.owner.login.slice(0, 2),
-          })
-        ),
-    [fullList, repository]
+    () => parseRepositories(fullList, search),
+    [fullList, search]
   );
 
   return (
     <div className="flex flex-col items-center justify-center gap-8 p-8">
       <h1 className="text-2xl">Repositórios</h1>
       <div className="w-full max-w-4xl space-y-4">
-        <Input.Label className="flex w-full flex-col" htmlFor="repository">
-          <Input.Root>
-            <Input.Icon>
-              <Search />
-            </Input.Icon>
-            <Input.Text
-              name="repository"
-              value={repository}
-              onChange={handleSearch}
-            />
-          </Input.Root>
-        </Input.Label>
+        <SearchInput search={search} onChange={setSearch} />
         {repositories.map((repository) => (
-          <div
-            className="flex items-center rounded p-4 hover:bg-zinc-50/10"
-            key={repository.fullName}
-          >
-            <Avatar className="h-9 w-9">
-              <AvatarImage src={repository.avatar} alt={repository.owner} />
-              <AvatarFallback>{repository.avatarFallback}</AvatarFallback>
-            </Avatar>
-            <div className="ml-4">
-              <p className="text-sm font-medium leading-none">
-                {repository.name}
-              </p>
-              <p className="text-muted-foreground text-sm">
-                by {repository.owner}
-              </p>
-            </div>
-            <div className="ml-auto font-medium">{repository.language}</div>
-            <div
-              className="ml-4 font-medium"
-              title={repository.private ? 'Privado' : 'Público'}
-            >
-              {repository.private ? (
-                <Lock className="text-red-800" />
-              ) : (
-                <Unlock className="text-green-800" />
-              )}
-            </div>
-          </div>
+          <RepositoryList.Item key={repository.fullName} {...repository} />
         ))}
         {loading &&
-          [...new Array(5)].map((_, i) => <RepositorySkeleton key={i} />)}
+          [...new Array(5)].map((_, i) => <RepositoryList.Skeleton key={i} />)}
       </div>
     </div>
   );
