@@ -1,5 +1,5 @@
 import { getOctokit } from '@/app/github/service';
-import { RepositoryCollaborators } from '@/app/github/users/type';
+import { RepositoryCollaborators, User } from '@/app/github/users/type';
 import { toast } from '@/components/ui/use-toast';
 
 import { create } from 'zustand';
@@ -53,3 +53,31 @@ export const useRepositoryCollaboratorsStore =
       }
     },
   }));
+
+interface UserStore {
+  loading: boolean;
+  user?: User;
+  loadUser(): Promise<void>;
+}
+
+export const useUserStore = create<UserStore>((set) => ({
+  loading: false,
+  loadUser: async (): Promise<void> => {
+    toast({ title: 'Carregando usuário...' });
+
+    set({ loading: true });
+
+    try {
+      const response = await getOctokit().rest.users.getAuthenticated();
+
+      set({ user: response.data });
+    } catch (e) {
+      toast({
+        title: 'Erro ao carregar os colaboradores!',
+        variant: 'destructive',
+      });
+    } finally {
+      set({ loading: false });
+    }
+  },
+}));
