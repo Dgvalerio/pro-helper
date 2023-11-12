@@ -2,15 +2,20 @@
 import React, { useEffect } from 'react';
 
 import { NextPage } from 'next';
+import { useRouter } from 'next/navigation';
 
 import { useUserStore } from '@/app/github/users/store';
 import { Loading } from '@/components/loading';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { routes } from '@/utils/routes';
 
 const HomePage: NextPage = () => {
+  const router = useRouter();
   const { loading, user, loadUser } = useUserStore();
 
   useEffect(() => void loadUser(), [loadUser]);
+
+  if (!loading && !user) router.replace(routes.configuration);
 
   if (loading || !user) return <Loading />;
 

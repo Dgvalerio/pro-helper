@@ -1,38 +1,40 @@
+import { routes } from '@/utils/routes';
+
 import { UrlObject } from 'url';
 
-type Url = string | UrlObject;
+export type Url = string | UrlObject;
 
 export const pages: {
   route: Url;
   page: string;
-  subItems?: { page: string; route: string; description: string }[];
+  subItems?: { page: string; route: Url; description: string }[];
 }[] = [
-  { route: '/', page: 'Home' },
+  { route: routes.home, page: 'Home' },
   {
     route: '/github',
     page: 'Github',
     subItems: [
       {
-        route: '/github/repositories',
+        route: routes.github.repositories,
         page: 'Repositórios',
         description: 'Listagem de todos os repositórios que você tem acesso.',
       },
       {
-        route: '/github/branches',
+        route: routes.github.branches,
         page: 'Branches',
         description: 'Listagem de todas as branches de um repositório.',
       },
       {
-        route: '/github/commits',
+        route: routes.github.commits,
         page: 'Commits',
         description: 'Listagem de todos os commits de uma branch.',
       },
       {
-        route: '/github/pull-requests',
+        route: routes.github.pullRequests,
         page: 'Pull Requests',
         description: 'Listagem de todas os Pull Requests de um repositório.',
       },
     ],
   },
-  { route: '/configuration', page: 'Configurações' },
+  { route: routes.configuration, page: 'Configurações' },
 ];
