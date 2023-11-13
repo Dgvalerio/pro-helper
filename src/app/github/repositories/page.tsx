@@ -55,9 +55,10 @@ const GithubRepositoriesPage: NextPage = () => {
       <h1 className="text-2xl">Repositórios</h1>
       <div className="w-full max-w-4xl space-y-4">
         <SearchInput search={search} onChange={setSearch} />
-        {repositories.map((repository) => (
-          <RepositoryList.Item key={repository.fullName} {...repository} />
-        ))}
+        {!loading &&
+          repositories.map((repository) => (
+            <RepositoryList.Item key={repository.fullName} {...repository} />
+          ))}
         {loading &&
           [...new Array(5)].map((_, i) => <RepositoryList.Skeleton key={i} />)}
       </div>

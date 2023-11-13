@@ -53,10 +53,11 @@ const GithubBranchesPage: NextPage = () => {
       <div className="w-full max-w-4xl space-y-4">
         <SelectRepository onChange={loadBranches} />
         <SearchInput search={search} onChange={setSearch} />
-        {branches.length === 0 && <p>Não há branches para serem exibidas</p>}
-        {branches.map((b) => (
-          <BranchList.Item key={b.sha} {...b} />
-        ))}
+        {!loading && branches.length === 0 && (
+          <p>Não há branches para serem exibidas</p>
+        )}
+        {!loading &&
+          branches.map((b) => <BranchList.Item key={b.sha} {...b} />)}
         {loading &&
           [...new Array(5)].map((_, i) => <BranchList.Skeleton key={i} />)}
       </div>
