@@ -39,14 +39,14 @@ export const SelectBranch: FC<SelectBranchProps> = ({ onChange }) => {
   const emptyLabel = useMemo(() => 'Nenhuma branch encontrada.', []);
 
   return (
-    <Popover.Root open={open} onOpenChange={setOpen}>
+    <Popover.Root onOpenChange={setOpen} open={open}>
       <Popover.Trigger asChild>
         <Button
-          variant="outline"
-          role="combobox"
           aria-expanded={open}
           className="w-full justify-between"
           disabled={fullBranchList.length === 0}
+          role="combobox"
+          variant="outline"
         >
           {value
             ? items.find(
@@ -68,8 +68,8 @@ export const SelectBranch: FC<SelectBranchProps> = ({ onChange }) => {
               items.map((item) => (
                 <Command.Item
                   key={item.value}
-                  value={item.value}
                   onSelect={onSelectItem}
+                  value={item.value}
                 >
                   <Check
                     className={cn(

@@ -25,7 +25,7 @@ const Item: FC<SimpleBranch> = (b) => (
     onClick={copyToClipboard.bind(null, b.name)}
   >
     <Avatar className="h-9 w-9">
-      <AvatarImage src={b.avatar} alt={b.user} />
+      <AvatarImage alt={b.user} src={b.avatar} />
       <AvatarFallback>{b.user}</AvatarFallback>
     </Avatar>
     <div className="ml-4">

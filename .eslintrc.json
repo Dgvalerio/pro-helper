@@ -2,5 +2,37 @@
   "extends": [
     "next/core-web-vitals",
     "@dgvalerio/eslint-config/next"
+  ],
+  "rules": {
+    "valid-jsdoc": [
+      "off"
+    ],
+    "react/self-closing-comp": "error",
+    "react/button-has-type": "error",
+    "react/jsx-no-useless-fragment": "error",
+    "react/jsx-sort-props": "warn",
+    "react/sort-comp": "warn",
+    "react/jsx-fragments": [
+      "error",
+      "syntax"
+    ],
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "ExportDefaultDeclaration",
+        "message": "Prefer named exports"
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "layout.tsx",
+        "page.tsx"
+      ],
+      "rules": {
+        "no-restricted-syntax": "off"
+      }
+    }
   ]
 }

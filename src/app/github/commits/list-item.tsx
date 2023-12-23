@@ -15,7 +15,7 @@ const Item: FC<SimpleCommit> = (c) => (
     onClick={openLink.bind(null, c.url)}
   >
     <Avatar className="h-9 w-9">
-      <AvatarImage src={c.avatar} alt={c.author} />
+      <AvatarImage alt={c.author} src={c.avatar} />
       <AvatarFallback>{c.avatarFallback}</AvatarFallback>
     </Avatar>
     <div className="ml-4">

@@ -61,10 +61,10 @@ const ConfigurationPage: NextPage = () => {
         {...form}
       >
         <Form.Field<Configuration>
-          name="githubToken"
-          label="Token do Github"
-          placeholder="Digite seu token"
           icon={<Key />}
+          label="Token do Github"
+          name="githubToken"
+          placeholder="Digite seu token"
         />
         <div className="mb-8 mt-4 flex flex-col justify-stretch gap-8">
           <Button type="submit">Salvar</Button>

@@ -60,7 +60,7 @@ const GithubCommitsPage: NextPage = () => {
           <SelectBranch onChange={onSelectBranch} />
           <SelectUser onChange={onSelectUser} />
         </div>
-        <SearchInput search={search} onChange={setSearch} />
+        <SearchInput onChange={setSearch} search={search} />
         {loading ? (
           [...new Array(5)].map((_, i) => <CommitList.Skeleton key={i} />)
         ) : (

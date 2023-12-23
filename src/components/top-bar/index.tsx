@@ -14,11 +14,11 @@ const ListItem = forwardRef<ElementRef<'a'>, ComponentPropsWithoutRef<'a'>>(
     <li>
       <NavigationMenu.Link asChild>
         <a
-          ref={ref}
           className={cn(
             'hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors',
             className
           )}
+          ref={ref}
           {...props}
         >
           <div className="text-sm font-medium leading-none">{title}</div>
@@ -47,9 +47,9 @@ export const TopBar: FC = () => (
                     <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
                       {subItems.map((sub) => (
                         <ListItem
+                          href={sub.route}
                           key={sub.page}
                           title={sub.page}
-                          href={sub.route}
                         >
                           {sub.description}
                         </ListItem>

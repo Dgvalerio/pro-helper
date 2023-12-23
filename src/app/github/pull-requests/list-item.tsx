@@ -25,7 +25,7 @@ const Item: FC<SimplePullRequest> = (i) => (
     onClick={copyToClipboard.bind(null, i.url)}
   >
     <Avatar className="h-9 w-9">
-      <AvatarImage src={i.avatar} alt={i.user} />
+      <AvatarImage alt={i.user} src={i.avatar} />
       <AvatarFallback>{i.user}</AvatarFallback>
     </Avatar>
     <div className="ml-4">

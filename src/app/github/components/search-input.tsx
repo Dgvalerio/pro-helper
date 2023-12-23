@@ -20,7 +20,7 @@ export const SearchInput: FC<SearchInputProps> = ({ search, onChange }) => {
         <Input.Icon>
           <Search />
         </Input.Icon>
-        <Input.Text name="search" value={search} onChange={handleSearch} />
+        <Input.Text name="search" onChange={handleSearch} value={search} />
       </Input.Root>
     </Input.Label>
   );

@@ -21,7 +21,7 @@ export const RepositorySkeleton: FC = () => (
 const Item: FC<SimpleRepository> = (repository) => (
   <div className="flex items-center rounded p-4 hover:bg-zinc-50/10">
     <Avatar className="h-9 w-9">
-      <AvatarImage src={repository.avatar} alt={repository.owner} />
+      <AvatarImage alt={repository.owner} src={repository.avatar} />
       <AvatarFallback>{repository.avatarFallback}</AvatarFallback>
     </Avatar>
     <div className="ml-4">

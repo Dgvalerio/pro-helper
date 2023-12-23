@@ -48,13 +48,13 @@ export const SelectRepository: FC<SelectRepositoryProps> = ({ onChange }) => {
   const emptyLabel = useMemo(() => 'Nenhum repositório encontrado.', []);
 
   return (
-    <Popover.Root open={open} onOpenChange={setOpen}>
+    <Popover.Root onOpenChange={setOpen} open={open}>
       <Popover.Trigger asChild>
         <Button
-          variant="outline"
-          role="combobox"
           aria-expanded={open}
           className="w-full justify-between"
+          role="combobox"
+          variant="outline"
         >
           {value
             ? items.find(
@@ -76,8 +76,8 @@ export const SelectRepository: FC<SelectRepositoryProps> = ({ onChange }) => {
               items.map((item) => (
                 <Command.Item
                   key={item.value}
-                  value={item.value}
                   onSelect={onSelectItem}
+                  value={item.value}
                 >
                   <Check
                     className={cn(

@@ -50,14 +50,14 @@ export const SelectUser: FC<SelectUserProps> = ({ onChange }) => {
   const emptyLabel = useMemo(() => 'Nenhum usuário encontrado.', []);
 
   return (
-    <Popover.Root open={open} onOpenChange={setOpen}>
+    <Popover.Root onOpenChange={setOpen} open={open}>
       <Popover.Trigger asChild>
         <Button
-          variant="outline"
-          role="combobox"
           aria-expanded={open}
           className="w-full justify-between"
           disabled={fullList.length === 0}
+          role="combobox"
+          variant="outline"
         >
           {value
             ? items.find(
@@ -79,8 +79,8 @@ export const SelectUser: FC<SelectUserProps> = ({ onChange }) => {
               items.map((item) => (
                 <Command.Item
                   key={item.value}
-                  value={item.value}
                   onSelect={onSelectItem}
+                  value={item.value}
                 >
                   <Check
                     className={cn(
@@ -89,7 +89,7 @@ export const SelectUser: FC<SelectUserProps> = ({ onChange }) => {
                     )}
                   />
                   <Avatar className="mr-4 h-9 w-9">
-                    <AvatarImage src={item.avatar} alt={item.value} />
+                    <AvatarImage alt={item.value} src={item.avatar} />
                     <AvatarFallback>{item.label}</AvatarFallback>
                   </Avatar>
                   {item.label}

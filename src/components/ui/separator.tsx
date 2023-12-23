@@ -15,14 +15,14 @@ const Separator = forwardRef<
     ref
   ) => (
     <SeparatorPrimitive.Root
-      ref={ref}
-      decorative={decorative}
-      orientation={orientation}
       className={cn(
         'shrink-0 bg-zinc-200 dark:bg-zinc-800',
         orientation === 'horizontal' ? 'h-[1px] w-full' : 'h-full w-[1px]',
         className
       )}
+      decorative={decorative}
+      orientation={orientation}
+      ref={ref}
       {...props}
     />
   )

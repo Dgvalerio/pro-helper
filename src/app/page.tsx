@@ -23,7 +23,7 @@ const HomePage: NextPage = () => {
     <div className="flex flex-1 flex-col items-center justify-center p-24">
       <div className="flex h-[32rem] w-[32rem] cursor-pointer items-center justify-center rounded-2xl bg-zinc-950 shadow active:bg-zinc-800">
         <Avatar className="h-32 w-32">
-          <AvatarImage src={user.avatar_url} alt={user.login} />
+          <AvatarImage alt={user.login} src={user.avatar_url} />
           <AvatarFallback>{user.login}</AvatarFallback>
         </Avatar>
       </div>

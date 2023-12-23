@@ -53,11 +53,11 @@ const InputLabel = forwardRef<
   ComponentPropsWithoutRef<typeof Root>
 >(({ className, ...props }, ref) => (
   <Root
-    ref={ref}
     className={cn(
       'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
       className
     )}
+    ref={ref}
     {...props}
   />
 ));
@@ -71,12 +71,12 @@ const InputIcon: FC<InputProps.Icon> = ({ children }) => (
 const InputText = forwardRef<HTMLInputElement, InputProps.Text>(
   ({ className, type, ...props }, ref) => (
     <input
-      type={type}
       className={cn(
         'flex h-10 w-full rounded-md bg-transparent px-3 py-2 text-sm outline-none ring-offset-white file:border-0 file:text-sm file:font-medium placeholder:text-zinc-500 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:placeholder:text-zinc-400',
         className
       )}
       ref={ref}
+      type={type}
       {...props}
     />
   )
