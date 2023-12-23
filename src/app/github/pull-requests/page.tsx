@@ -47,11 +47,12 @@ const GithubPullRequestsPage: NextPage = () => {
       <h1 className="text-2xl">Pull Requests</h1>
       <div className="w-full max-w-4xl space-y-4">
         <SelectRepository onChange={loadPulls} />
-        <SearchInput onChange={setSearch} search={search} />
-        {items.length === 0 && <p>Não há pull requests para serem exibidos</p>}
-        {items.map((i) => (
-          <PullRequestList.Item key={i.updated} {...i} />
-        ))}
+        <SearchInput search={search} onChange={setSearch} />
+        {!loading && items.length === 0 && (
+          <p>Não há pull requests para serem exibidos</p>
+        )}
+        {!loading &&
+          items.map((i) => <PullRequestList.Item key={i.updated} {...i} />)}
         {loading &&
           [...new Array(5)].map((_, i) => <PullRequestList.Skeleton key={i} />)}
       </div>

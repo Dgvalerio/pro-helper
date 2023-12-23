@@ -16,7 +16,7 @@ export const usePullRequestsStore = create<PullRequestsStore>((set) => ({
   repository: '',
   pulls: [],
   loadPulls: async (fullName: string): Promise<void> => {
-    toast({ title: 'Carregando branches...' });
+    toast({ title: 'Carregando pull requests...' });
 
     set({ loading: true, repository: fullName });
 

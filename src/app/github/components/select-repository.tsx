@@ -2,7 +2,6 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
 
 import { useRepositoriesStore } from '@/app/github/repositories/store';
-import { useRepositoryCollaboratorsStore } from '@/app/github/users/store';
 import { Button } from '@/components/ui/button';
 import { Command } from '@/components/ui/command';
 import { Popover } from '@/components/ui/popover';
@@ -18,7 +17,6 @@ export const SelectRepository: FC<SelectRepositoryProps> = ({ onChange }) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('');
 
-  const { loadCollaborators } = useRepositoryCollaboratorsStore();
   const {
     repositories: fullRepositoryList,
     loadRepositories,
@@ -27,7 +25,6 @@ export const SelectRepository: FC<SelectRepositoryProps> = ({ onChange }) => {
 
   const onSelectItem = (currentValue: string): void => {
     onChange(currentValue);
-    void loadCollaborators(currentValue);
     setValue(currentValue === value ? '' : currentValue);
     setOpen(false);
   };

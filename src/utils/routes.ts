@@ -1,5 +1,6 @@
 interface Routes {
   home: string;
+  openedPulls: string;
   github: {
     repositories: string;
     branches: string;
@@ -11,6 +12,7 @@ interface Routes {
 
 export const routes: Routes = {
   home: '/',
+  openedPulls: '/opened-pull-requests',
   github: {
     repositories: '/github/repositories',
     branches: '/github/branches',
