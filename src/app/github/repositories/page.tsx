@@ -54,7 +54,7 @@ const GithubRepositoriesPage: NextPage = () => {
     <div className="flex flex-col items-center justify-center gap-8 p-8">
       <h1 className="text-2xl">Repositórios</h1>
       <div className="w-full max-w-4xl space-y-4">
-        <SearchInput search={search} onChange={setSearch} />
+        <SearchInput onChange={setSearch} search={search} />
         {!loading &&
           repositories.map((repository) => (
             <RepositoryList.Item key={repository.fullName} {...repository} />

@@ -52,7 +52,7 @@ const GithubBranchesPage: NextPage = () => {
       <h1 className="text-2xl">Branches</h1>
       <div className="w-full max-w-4xl space-y-4">
         <SelectRepository onChange={loadBranches} />
-        <SearchInput search={search} onChange={setSearch} />
+        <SearchInput onChange={setSearch} search={search} />
         {!loading && branches.length === 0 && (
           <p>Não há branches para serem exibidas</p>
         )}
