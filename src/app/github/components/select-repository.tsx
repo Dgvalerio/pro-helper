@@ -1,6 +1,8 @@
 'use client';
 import React, { FC, useEffect, useMemo, useState } from 'react';
 
+import { PopoverContentProps } from '@radix-ui/react-popover';
+
 import { useRepositoriesStore } from '@/app/github/repositories/store';
 import { Button } from '@/components/ui/button';
 import { Command } from '@/components/ui/command';
@@ -10,10 +12,14 @@ import { cn } from '@/lib/utils';
 import { Check, ChevronsUpDown } from 'lucide-react';
 
 interface SelectRepositoryProps {
+  className?: PopoverContentProps['className'];
   onChange(repository: string): void;
 }
 
-export const SelectRepository: FC<SelectRepositoryProps> = ({ onChange }) => {
+export const SelectRepository: FC<SelectRepositoryProps> = ({
+  onChange,
+  className,
+}) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('');
 
@@ -61,7 +67,7 @@ export const SelectRepository: FC<SelectRepositoryProps> = ({ onChange }) => {
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </Popover.Trigger>
-      <Popover.Content className="w-96 p-0">
+      <Popover.Content className={cn('w-96 p-0', className)}>
         <Command.Root>
           <Command.Input placeholder={searchLabel || 'Search...'} />
           <Command.Empty>{emptyLabel || 'No data found.'}</Command.Empty>
