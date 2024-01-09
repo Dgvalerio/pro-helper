@@ -10,6 +10,7 @@ export const pages: {
   subItems?: { page: string; route: Url; description: string }[];
 }[] = [
   { route: routes.home, page: 'Home' },
+  { route: routes.days, page: 'Dias' },
   { route: routes.openedPulls, page: 'PRs Abertos' },
   {
     route: '/github',

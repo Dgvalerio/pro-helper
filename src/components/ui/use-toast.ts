@@ -1,3 +1,4 @@
+'use client';
 /* eslint-disable no-use-before-define */
 // Inspired by react-hot-toast library
 import { ReactNode, useEffect, useState } from 'react';
